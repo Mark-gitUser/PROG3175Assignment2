@@ -73,7 +73,7 @@ db.serialize(() => {
 });
 
 //Endpoint
-// 1 Greet Endpoint: Responds with a greeting based on timeOfDay, language, and tone
+//1 Greet Endpoint: Responds with a greeting based on timeOfDay, language, and tone
 app.post('/greet', (req, res) => {
     const { timeOfDay, language, tone } = req.body;
 
@@ -115,7 +115,7 @@ app.get('/timesOfDay', (req, res) => {
     });
 });
 
-// 3 Get Supported Languages Endpoint: Returns all supported languages
+// 3Get Supported Languages Endpoint: Returns all supported languages
 app.get('/languages', (req, res) => {
     const query = `SELECT DISTINCT language FROM Greetings`;
 
