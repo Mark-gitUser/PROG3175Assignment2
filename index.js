@@ -49,7 +49,7 @@ db.serialize(() => {
         ['Evening', 'Spanish', '¡Buenas noches!', 'Formal']
     ];
 
-    //Insert seed data if the table is empty
+    //Inserting seed data if the table is empty
     db.get('SELECT COUNT(*) AS count FROM Greetings', (err, row) => {
         if (err) {
             console.error('Error querying database:', err.message);
@@ -72,8 +72,23 @@ db.serialize(() => {
     });
 });
 
-//Endpoint
-//1 Greet Endpoint: Responds with a greeting based on timeOfDay, language, and tone
+// /Endpoint
+app.post('/addGreeting', (req, res) => {
+    const { timeOfDay, language, greetingMessage, tone } = req.body;
+    if (!timeOfDay || !language || !greetingMessage || !tone) {
+        return res.status(400).json({ error: 'All fields are required.' });
+    }
+    const query = `INSERT INTO Greetings (timeOfDay, language, greetingMessage, tone) VALUES (?, ?, ?, ?)`;
+    db.run(query, [timeOfDay, language, greetingMessage, tone], function (err) {
+        if (err) {
+            console.error('Database insert error:', err.message);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.status(201).json({ message: 'Greeting added successfully.', id: this.lastID });
+    });
+});
+
+//1 Greet ndpoint:Responds with a greeting based on timeOfDay, language, tone
 app.post('/greet', (req, res) => {
     const { timeOfDay, language, tone } = req.body;
 
@@ -110,7 +125,6 @@ app.get('/timesOfDay', (req, res) => {
             console.error('Database query error:', err.message);
             return res.status(500).json({ error: 'Internal server error' });
         }
-
         res.json(rows.map(row => row.timeOfDay));
     });
 });
