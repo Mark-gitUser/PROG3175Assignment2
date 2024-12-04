@@ -3,6 +3,8 @@
 //---------------------------------------------------
 
 //Import r=equired modules
+require('dotenv').config();
+
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
@@ -11,7 +13,7 @@ const PORT = 3000;
 // Middleware to parse JSON requests
 app.use(express.json());
 
-//Connect to SQLite DB
+//Connect to SQLite DB``
 const db = new sqlite3.Database('./greetings.db', (err) => {
     if (err) {
         console.error('Error connecting to SQLite database:', err.message);
@@ -28,7 +30,8 @@ db.serialize(() => {
             timeOfDay TEXT NOT NULL,
             language TEXT NOT NULL,
             greetingMessage TEXT NOT NULL,
-            tone TEXT NOT NULL
+            tone TEXT NOT NUL
+            L
         )
     `, (err) => {
         if (err) {
